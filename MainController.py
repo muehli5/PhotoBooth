@@ -1,6 +1,9 @@
 # MainController.py
 
 from MainFrame import MainFrame
+from CameraPanel import CameraPanel
+
+from wx import BoxSizer
 
 class MainController(object):
     def __init__(self, application):
