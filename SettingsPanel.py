@@ -3,53 +3,65 @@ from wx import Panel
 
 import wx
 
+class SubPanel(wx.Panel):
+    """"""
+
+    #----------------------------------------------------------------------
+    def __init__(self, parent, number):
+        """Constructor"""
+        wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour("red")
+
+        label = "Sub panel-%s" % number
+        lbl = wx.StaticText(self, label=label)
+
+        sizer = wx.BoxSizer()
+        sizer.Add(lbl, 0, wx.ALL|wx.CENTER, 5)
+        self.SetSizer(sizer)
+
+########################################################################
+class ColorPanel(wx.Panel):
+    """"""
+
+    #----------------------------------------------------------------------
+    def __init__(self, parent, number, color, sub_panels):
+        """Constructor"""
+        wx.Panel.__init__(self, parent)
+        self.SetBackgroundColour(color)
+
+        label = "Panel-%s" % number
+        lbl = wx.StaticText(self, label=label)
+
+        v_sizer = wx.BoxSizer(wx.VERTICAL)
+        for i in range(sub_panels):
+            p = SubPanel(self, i+1)
+            v_sizer.Add(p, 0, wx.ALL|wx.EXPAND|wx.CENTER, 10)
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(v_sizer, 0, wx.ALL, 5)
+        sizer.Add(lbl, 0, wx.ALL|wx.CENTER, 5)
+        self.SetSizer(sizer)
+
 class SettingsPanel(Panel):
     def __init__(self, parent):
         Panel.__init__(self, parent)
-        sizer = self.create_controls()
-        self.SetSizer(sizer)
 
-    def create_controls(self):
-        box = self.create_box()
-        #buttons = self.create_buttons()
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(box, 1, wx.EXPAND | wx.ALL, 50)
-        #sizer.Add(buttons, 0, wx.EXPAND | wx.BOTTOM, 10)
-        return sizer
+        hsizer = wx.BoxSizer(wx.HORIZONTAL)
+        v_sizer = wx.BoxSizer(wx.VERTICAL)
 
-    def create_box(self):
-        contents = self.create_box_contents()
-        box = wx.StaticBox(self, -1, 'Haupteinstellungen')
-        sizer = wx.StaticBoxSizer(box, wx.VERTICAL)
-        sizer.Add(contents, 1, wx.EXPAND | wx.ALL, 10)
-        return sizer
+        colors = [("green", 3),
+                  ("yellow", 2),
+                  ("light blue", 2),
+                  ("purple", 2)]
+        count = 1
+        for color, subpanel in colors:
+            panel = ColorPanel(self, count, color, subpanel)
+            hsizer.Add(panel, 1, wx.EXPAND)
+            count += 1
 
-    def create_box_contents(self):
-        male = wx.CheckBox(self, -1, 'Male')
-        married = wx.CheckBox(self, -1, 'Married')
-        age = self.create_age()
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(male)
-        sizer.AddSpacer(10)
-        sizer.Add(married)
-        sizer.AddSpacer(10)
-        sizer.Add(age)
-        return sizer
+        orange_panel = ColorPanel(self, count, "orange", 0)
+        v_sizer.Add(hsizer, 1, wx.EXPAND)
+        v_sizer.Add(orange_panel, 1, wx.EXPAND)
 
-    def create_age(self):
-        age = wx.SpinCtrl(self, -1, '28', min=0, max=100, size=(64, -1))
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        text = wx.StaticText(self, -1, 'Age')
-        sizer.Add(text, 0, wx.ALIGN_CENTER_VERTICAL)
-        sizer.AddSpacer(10)
-        sizer.Add(age)
-        return sizer
-
-    def create_buttons(self):
-        button = wx.Button(self, wx.ID_OK, 'OK')
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.AddStretchSpacer(1)
-        sizer.Add(button)
-        sizer.AddStretchSpacer(1)
-        return sizer
+        self.SetSizer(v_sizer)
 
