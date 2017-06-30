@@ -1,25 +1,13 @@
 # MainFrame.py
+from WizardPanel import WizardPanel
 
-from CameraPanel import CameraPanel
-
-from wx import Frame
+from wx import Frame, Panel
 from wx import ID_ANY, EmptyString, DefaultPosition, DisplaySize
-from wx import BoxSizer, VERTICAL, EXPAND
 import wx
 
 
 class MainFrame(Frame):
-    def __init__(self, parent):
-        Frame.__init__(self, parent, id=ID_ANY, title=EmptyString, pos=DefaultPosition, size=DisplaySize())
+    def __init__(self, parent, title):
+        Frame.__init__(self, parent, id=ID_ANY, title=title, pos=DefaultPosition, size=DisplaySize())
 
-        panel1 = CameraPanel(self)
-
-        box = wx.BoxSizer(wx.VERTICAL)
-
-        box.Add(panel1, 1, wx.EXPAND)
-
-        self.SetAutoLayout(True)
-
-        self.SetSizer(box)
-
-        self.Layout()
+        self.panelWizard = WizardPanel(self)
