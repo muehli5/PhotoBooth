@@ -1,13 +1,13 @@
 # MainFrame.py
-from WizardPanel import WizardPanel
 
-from wx import Frame, Panel
+from wx import Frame
 from wx import ID_ANY, EmptyString, DefaultPosition, DisplaySize
-import wx
 
+
+from SettingNBPanel import SettingPanel
 
 class MainFrame(Frame):
-    def __init__(self, parent, title):
-        Frame.__init__(self, parent, id=ID_ANY, title=title, pos=DefaultPosition, size=DisplaySize())
+    def __init__(self, parent):
+        Frame.__init__(self, parent, id=ID_ANY, title=EmptyString, pos=DefaultPosition, size=DisplaySize())
+        panel = SettingPanel(self)
 
-        self.panelWizard = WizardPanel(self)
